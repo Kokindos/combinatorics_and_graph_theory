@@ -1,8 +1,6 @@
 add_executable(1_A A.cpp)
-add_executable(1_B B.cpp)
 add_executable(1_C C.cpp)
 add_executable(1_D D.cpp)
-add_executable(1_E E.cpp)
 add_executable(1_F F.cpp)
 add_executable(1_G G.cpp)
 add_executable(1_H H.cpp)
