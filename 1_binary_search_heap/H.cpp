@@ -27,9 +27,9 @@ struct Heap {
     }
 
     void siftUp(int i) {
-        while (i > 0 && tree[i] < tree[ (i - 1) / 2]) {
-            swap(tree[i], tree[ (i - 1) / 2]);
-            i = (i - 1) / 2;
+        while (i > 0 && tree[i] > tree[parent(i)]) {
+            swap(tree[i], tree[parent(i)]);
+            i = parent(i);
         }
     }
 
@@ -38,25 +38,31 @@ struct Heap {
         siftUp(tree.size() - 1);
     }
 
+    void print() {
+        for (int i = 0; i < tree.size(); i++) {
+            cout << tree[i] << " ";
+        }
+    }
+
     void siftDown(int i) {
         while (true) {
-            if (i * 2 + 2 < tree.size()) {
-                if (tree[i] < tree[i * 2 + 1] && tree[i] < tree[i * 2 + 2])
+            int rightChild = right(i);
+            int leftChild = left(i);
+            if (rightChild < tree.size()) {
+                if (tree[i] > tree[leftChild] && tree[i] > tree[rightChild])
                     break;
                 else {
-                    int minChild = i * 2 + 1 < i * 2 + 2 ? i * 2 + 1 : i * 2 + 2;
-                    swap(tree[i], tree[minChild]);
-                    i = minChild;
+                    int maxChild = tree[leftChild] < tree[rightChild] ? rightChild : leftChild;
+                    swap(tree[i], tree[maxChild]);
+                    i = maxChild;
                 }
-            }
-            else if (i * 2 + 1 < tree.size()) {
-                if (tree[i] > tree[i * 2 + 1]) {
-                    swap(tree[i], tree[i * 2 + 1]);
-                    i = i * 2 + 1;
+            } else if (leftChild < tree.size()) {
+                if (tree[i] < tree[leftChild]) {
+                    swap(tree[i], tree[leftChild]);
+                    i = leftChild;
                 } else
                     break;
-            }
-            else
+            } else
                 break;
         }
     }
@@ -78,15 +84,13 @@ int main() {
             int x;
             cin >> x;
             heap.add(x);
-        }
-        else if (op == "EXTRACT") {
+        } else if (op == "EXTRACT") {
             if (heap.empty()) {
                 cout << "CANNOT\n";
             } else {
                 cout << heap.getDeleteMin() << "\n";
             }
-        }
-        else if (op == "CLEAR") {
+        } else if (op == "CLEAR") {
             heap.clear();
         }
     }
